@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import "bootstrap/dist/css/bootstrap.css";
-import Like from "./common/like";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
+import MoviesTable from "./moviesTable";
 
 class MovieServices extends Component {
   state = {
@@ -13,14 +13,14 @@ class MovieServices extends Component {
     genres: [],
     currentPage: 1,
     pageSize: 4,
-    selectedItem: [],
   };
 
   componentDidMount() {
-    this.setState({ getMovies: getMovies(), genres: getGenres() });
+    const genres = [{name: 'All Genres'},...getGenres()];
+    this.setState({ getMovies: getMovies(), genres });
   }
 
-  deleteMovie = (movie) => {
+  handleDeleteMovie = (movie) => {
     const movies = this.state.getMovies.filter((m) => m._id !== movie._id);
     this.setState({ getMovies: movies });
   };
@@ -43,16 +43,17 @@ class MovieServices extends Component {
   };
 
   handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre });
+    this.setState({ selectedGenre: genre, currentPage: 1 });
   };
 
   render() {
-    const { pageSize, currentPage, getMovies: allMovies } = this.state;
+    const { pageSize, currentPage,selectedGenre, getMovies: allMovies } = this.state;
 
     if (this.state.getMovies.length === 0)
       return <p>There are no movies in the Database</p>;
 
-    const movies = paginate(allMovies, currentPage, pageSize);
+    const filtered = selectedGenre && selectedGenre._id ? allMovies.filter(m => m.genre._id === selectedGenre._id): allMovies;
+    const movies = paginate(filtered, currentPage, pageSize);
 
     return (
       <React.Fragment>
@@ -66,52 +67,17 @@ class MovieServices extends Component {
           </div>
           <div className="col">
             <span>
-              Showing {this.state.getMovies.length} movies in the database
+              Showing {filtered.length} movies in the database
             </span>
             <div>
               <button onClick={this.handleReset} className="btn btn-primary">
                 Reset
               </button>
             </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Genre</th>
-                  <th>Stock</th>
-                  <th>Rate</th>
-                  <th></th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {movies.map((movie) => (
-                  <tr key={movie._id}>
-                    <td>{movie.title}</td>
-                    <td>{movie.genre.name}</td>
-                    <td>{movie.numberInStock}</td>
-                    <td>{movie.dailyRentalRate}</td>
-                    <td>
-                      <Like
-                        onClick={() => this.handleLike(movie)}
-                        liked={movie.liked}
-                      />
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => this.deleteMovie(movie)}
-                        className="btn btn-danger"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            <MoviesTable movies={movies} onLike={this.handleLike} onDelete={this.handleDeleteMovie}/>
 
             <Pagination
-              itemsCount={this.state.getMovies.length}
+              itemsCount={filtered.length}
               pageSize={pageSize}
               onPageChange={this.handlePageChange}
               currentPage={currentPage}

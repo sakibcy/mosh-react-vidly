@@ -7,11 +7,12 @@ function ListGroup(props) {
     <ul className="list-group">
       {items.map((item) => (
         <li
+        onClick={() => onItemSelect(item)}
           key={item[valueProperty]}
           className={
             item === selectedItem ? "list-group-item acive" : "list-group-item"
           }
-          onClick={() => onItemSelect(item)}
+          
         >
           {item[textProperty]}
         </li>
