@@ -1,16 +1,29 @@
 import Like from "./common/like";
-import React from "react";
+import React, {Component} from "react";
 
-const MoviesTable = (props) => {
-const {movies, onLike, onDelete}= props;
+class MoviesTable extends Component {
+  raiseSort = path => {
+    const sortColumn = {...this.props.sortColumn};
+    if(sortColumn.path === path){
+      sortColumn.order = sortColumn.order === 'asc' ? 'desc' : 'asc';
+    }
+    else {
+      sortColumn.order = 'asc';
+      sortColumn.path = path;
+    }
+    this.props.onSort(sortColumn);
+  }
+   
+  render() { 
+    const {movies, onLike, onDelete}= this.props;
 
     return ( <table className="table">
     <thead>
       <tr>
-        <th>Title</th>
-        <th>Genre</th>
-        <th>Stock</th>
-        <th>Rate</th>
+        <th onClick={() => this.raiseSort('title')}>Title</th>
+        <th onClick={() => this.raiseSort('genre.name')}>Genre</th>
+        <th onClick={() => this.raiseSort('numberInStock')}>Stock</th>
+        <th onClick={() => this.raiseSort('dailyRentalRate')}>Rate</th>
         <th></th>
         <th></th>
       </tr>
@@ -40,6 +53,8 @@ const {movies, onLike, onDelete}= props;
       ))}
     </tbody>
   </table> );
+  }
 }
+ 
  
 export default MoviesTable;
