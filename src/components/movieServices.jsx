@@ -7,6 +7,7 @@ import ListGroup from "./common/listGroup";
 import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import _ from 'lodash';
+import { Outlet } from "react-router-dom";
 
 class MovieServices extends Component {
   state = {
@@ -76,6 +77,7 @@ class MovieServices extends Component {
 
     return (
       <React.Fragment>
+        <Outlet/>
         <div className="p-4 row">
           <div className="col-2">
             <ListGroup
