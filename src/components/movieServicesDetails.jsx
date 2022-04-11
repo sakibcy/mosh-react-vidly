@@ -13,7 +13,7 @@ const MovieServicesDetails = () => {
     return ( 
         <div className='container'>
             <h1 style={{padding: '20px'}}>Movies Details: {id}</h1>
-            <button style={{margin: '20px'}} type="button" class="btn btn-success" onClick={() => gotoMovies()}>Go to Movies Page</button>
+            <button style={{margin: '20px'}} type="button" className="btn btn-success" onClick={() => gotoMovies()}>Go to Movies Page</button>
 
         </div>
      );

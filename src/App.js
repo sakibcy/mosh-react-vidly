@@ -4,6 +4,7 @@ import "./App.css";
 import NavBar from "./components/common/navBar";
 import NotFound from "./components/common/notFound";
 import Customers from "./components/customers";
+import LoginForm from "./components/loginForm";
 import MovieServices from "./components/movieServices";
 import MovieServicesDetails from "./components/movieServicesDetails";
 import Rentals from "./components/rentals";
@@ -15,6 +16,7 @@ const App = () => {
 
       <Routes>
         <Route path="/" element={<Navigate to="/movies" />} />
+        <Route path="login" element={<LoginForm />} />
         <Route path="movies" element={<MovieServices />} />
         <Route path="movies/:id" element={<MovieServicesDetails />} />
         <Route path="customers" element={<Customers />} />
