@@ -8,6 +8,8 @@ import LoginForm from "./components/loginForm";
 import MovieServices from "./components/movieServices";
 import MovieServicesDetails from "./components/movieServicesDetails";
 import Rentals from "./components/rentals";
+import RegisterForm from "./components/registerForm";
+import MovieForm from "./components/movieForm";
 
 const App = () => {
   return (
@@ -17,8 +19,12 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Navigate to="/movies" />} />
         <Route path="login" element={<LoginForm />} />
+        <Route path="register" element={<RegisterForm />} />
+
         <Route path="movies" element={<MovieServices />} />
         <Route path="movies/:id" element={<MovieServicesDetails />} />
+        <Route path="movies/new" element={<MovieForm />} />
+
         <Route path="customers" element={<Customers />} />
         <Route path="rentals" element={<Rentals />} />
         <Route path="not-found" element={<NotFound />} />
